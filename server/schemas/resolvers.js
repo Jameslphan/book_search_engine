@@ -16,7 +16,7 @@ const resolvers = {
             throw new AuthenticationError("You need to be logged in!");
         }
     },
-    Mutations: {
+    Mutation: {
         // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
         addUser: async (parent, args) => {
             const user = await User.create(args);
@@ -33,6 +33,10 @@ const resolvers = {
             }
 
             const correctPw = await user.isCorrectPassword(password);
+
+            if (!correctPw) {
+                throw new AuthenticationError("Incorrect credentials!")
+            }
 
             const token = signToken(user);
             return { token, user }
