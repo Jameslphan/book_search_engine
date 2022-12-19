@@ -1,7 +1,7 @@
 // Todo: server.js: Implement the Apollo Server and apply it to the Express server as middleware.
 const { ApolloServer } = require('apollo-server-express');
 // Todo: Need to create schema (In-work)
-import { typeDefs, resolvers } from require('./schemas');
+const { typeDefs, resolvers } = require('./schemas');
 
 const express = require('express');
 const path = require('path');
