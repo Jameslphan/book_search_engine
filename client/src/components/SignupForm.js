@@ -13,7 +13,7 @@ const SignupForm = () => {
     email: "",
     password: "",
   });
-  const [addUser, { error }] = useMutation(ADD_USER);
+  const [addUser] = useMutation(ADD_USER);
 
   // set state for form validation
   const [validated] = useState(false);
