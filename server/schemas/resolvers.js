@@ -44,28 +44,34 @@ const resolvers = {
 
         // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
         // user comes from `req.user` created in the auth middleware function
-        saveBook: async (_parent, { userId, bookData }, context) => {
+        saveBook: async (parent, args, context) => {
             if (context.user) {
-                return User.findOneAndUpdate(
-                  { _id: userId },
-                  { $addToSet: { savedBooks: { book: bookData } } },
-                  { new: true, runValidators: true }
-                );
-              }
-            throw new AuthenticationError("To save a book you must be logged in!");
-        },
+              const updatedUser = await User.findByIdAndUpdate(
+                { _id: context.user._id },
+                // take the input type to replace "body" as the arguement
+                { $addToSet: { savedBooks: args.input } },
+                { new: true, runValidators: true }
+              );
+      
+              return updatedUser;
+            }
+      
+            throw new AuthenticationError("You need to be logged in!");
+          },
 
-        removeBook: async (_parent, { book }, context) => {
+          removeBook: async (parent, args, context) => {
             if (context.user) {
-                const updatedUser = await User.findOneAndUpdate(
-                    { _id: context.user._id },
-                    { $pull: { savedBooks: book } },
-                    { new: true }
-                );
-                return updatedUser;
-            };
-            throw new AuthenticationError("To delete a book you must be logged in!");
-        }
+              const updatedUser = await User.findOneAndUpdate(
+                { _id: context.user._id },
+                { $pull: { savedBooks: { bookId: args.bookId } } },
+                { new: true }
+              );
+      
+              return updatedUser;
+            }
+      
+            throw new AuthenticationError("You need to be logged in!");
+          },
     },
 
 };
