@@ -2,6 +2,7 @@
 const { ApolloServer } = require('apollo-server-express');
 // Todo: Need to create schema (In-work)
 const { typeDefs, resolvers } = require('./schemas');
+import { inMemoryLRUCache } from '@aollo/utils/keyvaluecache';
 
 const express = require('express');
 const path = require('path');
@@ -16,6 +17,12 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: authMiddleware,
+  cache: new inMemoryLRUCache({
+    // ~100MiB
+    maxSize: Math.pow(2, 20) * 100,
+    // 5 minutes (in milliseconds)
+    ttl: 300_000,
+  }),
 });
 
 app.use(express.urlencoded({ extended: true }));
