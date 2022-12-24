@@ -20,7 +20,7 @@ https://basicbooksearch.herokuapp.com/
 ## Usage
 For demonstration purpose only. <br />
 Screenshot: <br />
-![alt text](/assets/Saved.png)
+![alt text](/Assets/Saved.png)
 
 ## Features
 - Users can:
